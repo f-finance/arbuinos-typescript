@@ -1,0 +1,91 @@
+{
+  "name": "arbuinos-typescript",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "",
+  "_comment": {
+    "main": "dist/index.js",
+    "typings": "dist/index.d.ts",
+    "files": [
+      "dist",
+      "src"
+    ],
+    "scripts": {
+      "start": "tsdx watch",
+      "build": "tsdx build",
+      "ts": "tsc --pretty",
+      "test": "tsdx test",
+      "lint": "tsdx lint",
+      "prepare": "tsdx build",
+      "size": "size-limit",
+      "analyze": "size-limit --why",
+      "publish": "np"
+    },
+    "module": "dist/swap-router-sdk.esm.js",
+    "size-limit": [
+      {
+        "path": "dist/swap-router-sdk.cjs.production.min.js",
+        "limit": "10 KB"
+      },
+      {
+        "path": "dist/swap-router-sdk.esm.js",
+        "limit": "10 KB"
+      }
+    ],
+    "type": "module"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.8",
+    "@babel/node": "^7.15.8",
+    "@babel/plugin-transform-modules-commonjs": "^7.15.4",
+    "@babel/preset-env": "^7.15.8",
+    "@tsconfig/node16": "^1.0.2",
+    "babel-jest": "^27.3.1",
+    "esm": "^3.2.25",
+    "jest": "^27.3.1",
+    "mocha": "^9.1.3",
+    "nodemon": "^2.0.14",
+    "prettier": "2.5.1",
+    "regenerator-runtime": "^0.13.9",
+    "typescript": "^4.5.5",
+
+    "@size-limit/preset-small-lib": "^7.0.5",
+    "@types/async-retry": "^1.4.3",
+    "@types/react": "^17.0.38",
+    "husky": "^7.0.4",
+    "np": "^7.6.0",
+    "size-limit": "^7.0.5",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.3.1"
+  },
+  "dependencies": {
+    "@microsoft/signalr": "^5.0.13",
+    "@taquito/signer": "^11.2.0",
+    "@taquito/taquito": "^11.2.0",
+    "arbuinos": "^0.2.2",
+    "batch-request-js": "^2.0.2",
+    "bignumber.js": "^9.0.1",
+
+    "swap-router-sdk": "^1.3.0",
+    "winston": "^3.6.0",
+    "async-retry": "1.3.3",
+    "p-memoize": "6.0.1",
+    "react": "^17.0.2"
+  }
+}

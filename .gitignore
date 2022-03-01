@@ -1,0 +1,14 @@
+.idea
+dist
+node_modules
+yarn.lock
+package-lock.json
+
+example/env.js
+
+Session.vim
+*.log
+
+build
+.docusaurus
+
