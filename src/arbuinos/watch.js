@@ -10,7 +10,7 @@ const connection = new signalR.HubConnectionBuilder()
 
 export const watch = async (contractStorage, onStoreChange) => {
   await connection.start();
-  for (let address of contractStorage.keys()) {
+  for (const address of contractStorage.keys()) {
     await connection.invoke("SubscribeToOperations", {
       address,
     });

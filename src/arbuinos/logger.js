@@ -4,7 +4,7 @@ const myFormat = winston.format.printf(
   ({ level, message, label, timestamp, ...meta }) => {
     // return `${timestamp} [${label}] ${level}: ${message}`;
     return `[${timestamp}] ${level}: ${message} ${
-      !!Object.keys(meta).length ? JSON.stringify(meta, null, 2) : ""
+      Object.keys(meta).length ? JSON.stringify(meta, null, 2) : ""
     }`;
   }
 );

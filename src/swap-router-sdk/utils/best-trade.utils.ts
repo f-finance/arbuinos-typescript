@@ -61,7 +61,7 @@ export const getBestTradeExactInput = (
 ) => {
   let bestTradeExactInput: Trade = [];
 
-  for (let routePairs of routePairsCombinations) {
+  for (const routePairs of routePairsCombinations) {
     const trade = calculateTradeExactInput(inputAssetAmount, routePairs);
 
     if (isTradeOutputBetter(trade, bestTradeExactInput)) {
@@ -78,7 +78,7 @@ export const getBestTradeExactOutput = (
 ) => {
   let bestTradeExactOutput: Trade = [];
 
-  for (let routePairs of routePairsCombinations) {
+  for (const routePairs of routePairsCombinations) {
     const trade = calculateTradeExactOutput(outputAssetAmount, routePairs);
 
     if (isTradeInputBetter(trade, bestTradeExactOutput)) {

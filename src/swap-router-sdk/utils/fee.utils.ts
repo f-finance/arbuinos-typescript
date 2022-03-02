@@ -26,7 +26,7 @@ const getTradeOperationFakeFee = (tradeOperation: TradeOperation) => {
 export const getTradeFakeFee = (trade: Trade) => {
   let fakeFeeSum = new BigNumber(0);
 
-  for (let tradeOperation of trade) {
+  for (const tradeOperation of trade) {
     const tradeOperationFakeFee = getTradeOperationFakeFee(tradeOperation);
 
     fakeFeeSum = fakeFeeSum.plus(tradeOperationFakeFee);
