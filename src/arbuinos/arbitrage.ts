@@ -2,7 +2,7 @@ import {
   estimateBestAmountIn,
   estimatePoolAmountOut,
   estimateProfit,
-} from "./estimates.js";
+} from "./estimates";
 
 import BigNumber from "bignumber.js";
 

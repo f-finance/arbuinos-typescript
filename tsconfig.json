@@ -2,10 +2,17 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "ES6",
+    "declaration": true,
     "allowJs": true,
+    "checkJs": true,
     "moduleResolution": "node",
     "outDir": "./dist",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "plugins": [
+      {
+        "name": "typescript-eslint-language-service"
+      }
+    ]
   },
   "files": ["index.ts"],
   "include": ["src/**/*"],

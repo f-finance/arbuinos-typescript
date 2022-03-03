@@ -1,13 +1,13 @@
-import { estimateAmountOut } from "./estimates.js";
-import { DEX } from "./config/dex.js";
-import { slugToAsset } from "./helpers.js";
-import { TOKEN_TYPE } from "./config/tokens.js";
+import { estimateAmountOut } from "./estimates";
+import { DexTypeEnum } from "../enum/dex-type.enum";
+import { slugToAsset } from "./helpers";
+import { TokenStandardEnum } from '../enum/token-standard.enum';
 
 import { OpKind } from "@taquito/taquito";
 import BigNumber from "bignumber.js";
 
 export const approveTokenCall = (token, tokenContract, from, to, amount) => {
-  if (token.type === TOKEN_TYPE.FA2) {
+  if (token.type === TokenStandardEnum.FA2) {
     return tokenContract.methods.update_operators([
       {
         add_operator: {
@@ -27,10 +27,10 @@ export const approveTokenCall = (token, tokenContract, from, to, amount) => {
  * But, some DEXes recommend swapping tokens in their pools using special router contract
  */
 const poolContractAddressToExecutorContractAddress = {
-  [DEX.QUIPUSWAP]: (address) => address,
-  [DEX.VORTEX]: (address) => address,
-  [DEX.PLENTY]: (address) => address,
-  [DEX.SPICYSWAP]: (_) => "KT1PwoZxyv4XkPEGnTqWYvjA1UYiPTgAGyqL" // SpicySwap v1 router
+  [DexTypeEnum.QuipuSwap]: (address) => address,
+  [DexTypeEnum.Vortex]: (address) => address,
+  [DexTypeEnum.Plenty]: (address) => address,
+  [DexTypeEnum.SpicySwap]: (_) => "KT1PwoZxyv4XkPEGnTqWYvjA1UYiPTgAGyqL" // SpicySwap v1 router
 };
 
 /**
@@ -47,7 +47,7 @@ const poolContractAddressToExecutorContractAddress = {
  */
 export const operationGeneratorFactory = (contract) => {
   return {
-    [DEX.QUIPUSWAP]: {
+    [DexTypeEnum.QuipuSwap]: {
       tezToToken: (amountIn, minAmountOut, receiver) => ({
         kind: OpKind.TRANSACTION,
         ...contract.methods
@@ -63,7 +63,7 @@ export const operationGeneratorFactory = (contract) => {
           .toTransferParams()
       })
     },
-    [DEX.VORTEX]: {
+    [DexTypeEnum.Vortex]: {
       tezToToken: (amountIn, minAmountOut, receiver) => {
         const deadline = new Date(new Date().getTime() + 5 * 60 * 1000); // in 5 minutes
         return {
@@ -94,7 +94,7 @@ export const operationGeneratorFactory = (contract) => {
         };
       }
     },
-    [DEX.PLENTY]: {
+    [DexTypeEnum.Plenty]: {
       tokenToToken: (
         amountIn,
         minAmountOut,
@@ -109,14 +109,14 @@ export const operationGeneratorFactory = (contract) => {
             recipient: receiver,
             requiredTokenAddress: tokenOutInfo.address,
             requiredTokenId: new BigNumber(
-              tokenOutInfo.type === TOKEN_TYPE.FA2 ? `${tokenOutInfo.tokenId}` : "0"
+              tokenOutInfo.type === TokenStandardEnum.FA2 ? `${tokenOutInfo.tokenId}` : "0"
             ),
             tokenAmountIn: amountIn
           })
           .toTransferParams()
       })
     },
-    [DEX.SPICYSWAP]: {
+    [DexTypeEnum.SpicySwap]: {
       tokenToToken: (
         amountIn,
         minAmountOut,
@@ -128,13 +128,13 @@ export const operationGeneratorFactory = (contract) => {
 
         const tokenIn = {
           fa2_address: tokenInInfo.address,
-          ...(tokenInInfo.type === TOKEN_TYPE.FA2
+          ...(tokenInInfo.type === TokenStandardEnum.FA2
             ? { token_id: new BigNumber(tokenInInfo.tokenId) }
             : {})
         };
         const tokenOut = {
           fa2_address: tokenOutInfo.address,
-          ...(tokenOutInfo.type === TOKEN_TYPE.FA2
+          ...(tokenOutInfo.type === TokenStandardEnum.FA2
             ? { token_id: new BigNumber(tokenOutInfo.tokenId) }
             : {})
         };

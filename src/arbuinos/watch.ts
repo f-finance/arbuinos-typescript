@@ -1,6 +1,6 @@
 import signalR from "@microsoft/signalr";
 
-import logger from "./logger.js";
+import logger from "./logger";
 
 // TODO handle connection issues
 const connection = new signalR.HubConnectionBuilder()

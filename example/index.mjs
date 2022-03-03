@@ -2,7 +2,7 @@ import { MichelCodecPacker, TezosToolkit } from "@taquito/taquito";
 import { InMemorySigner } from "@taquito/signer";
 import BigNumber from "bignumber.js";
 
-import { ENV, CONTRACTS } from "./env.mjs";
+import { ENV, CONTRACTS } from "./env.example.mjs";
 import {
   initStorageBuilder,
   extractPoolsFromState,
