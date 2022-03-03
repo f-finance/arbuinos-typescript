@@ -1,7 +1,7 @@
-import { assetToSlug } from "../helpers.js";
-import { TokenStandardEnum} from '../../enum/token-standard.enum';
+import { assetToSlug } from "../arbuinos/helpers.js";
+import { TokenStandardEnum} from '../enum/token-standard.enum';
 
-export const TOKENS = [
+export const TokensWhitelist = [
   {
     "type": "xtz",
     "tokenType": TokenStandardEnum.XTZ,

@@ -20,7 +20,6 @@ export const getPairFeeRatio = (pair: RoutePairWithDirection) => {
   return new BigNumber(100).minus(feePercent).dividedBy(100);
 };
 
-// @ts-ignore
 // TODO: add estimated fee base on aToken token type
 const getTradeOperationFakeFee = (tradeOperation: TradeOperation) => {
   return 1;
