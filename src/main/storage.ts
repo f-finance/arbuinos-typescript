@@ -1,4 +1,4 @@
-import batchRequest from "batch-request-js";
+const batchRequest = require("batch-request-js");
 
 const contractStorageRequest = (tezos) => (contract) =>
   tezos.contract

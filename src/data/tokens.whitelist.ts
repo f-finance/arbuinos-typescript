@@ -1,4 +1,4 @@
-import { assetToSlug } from "../arbuinos/helpers.js";
+import { assetToSlug } from "../main/helpers.js";
 import { TokenStandardEnum} from '../enum/token-standard.enum';
 
 export const TokensWhitelist = [
