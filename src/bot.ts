@@ -10,6 +10,7 @@ import {
   arbitrageToOperationBatch,
   watch,
 } from "./arbuinos";
+import env from "./env";
 
 
 const tryExecuteArbitrages = async (state, arbitrages) => {
@@ -202,18 +203,13 @@ const tryExecuteArbitrages = async (state, arbitrages) => {
     ],
   };
 
-  const ENV = {
-    PRIVATE_KEY: "your secret key here",
-    TEZOS_RPC_HOST: "https://mainnet.api.tez.ie",
-  };
-
   console.log("Bot is started...");
 
-  const tezos = new TezosToolkit(ENV.TEZOS_RPC_HOST);
+  const tezos = new TezosToolkit(env.TEZOS_RPC_HOST);
   tezos.setPackerProvider(new MichelCodecPacker());
 
   try {
-    const signer = await InMemorySigner.fromSecretKey(ENV.PRIVATE_KEY);
+    const signer = await InMemorySigner.fromSecretKey(env.PRIVATE_KEY);
     tezos.setProvider({ signer });
     console.log("Key has succesfully signed");
   } catch (err) {
