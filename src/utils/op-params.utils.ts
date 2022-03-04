@@ -4,6 +4,7 @@ import { getLiquidityBakingTransferParams } from '../dexes/liquidity-baking/util
 import { getPlentyTransferParams } from '../dexes/plenty/utils/transfer-params.utils';
 import { getQuipuSwapTransferParams } from '../dexes/quipu-swap/utils/transfer-params.utils';
 import { getYouvesTransferParams } from '../dexes/youves/utils/transfer-params.utils';
+import { getVortexTransferParams } from '../dexes/vortex/utils/transfer-params.utils';
 import { DexTypeEnum } from '../enum/dex-type.enum';
 import { Trade, TradeOperation } from '../interface/trade.interface';
 import { getPermissionsTransferParams } from './permissions-transfer-params.utils';
@@ -22,6 +23,8 @@ const getTradeOperaitonTransferParams = async (
       return [await getLiquidityBakingTransferParams(tradeOperation, senderPublicKeyHash, tezos)];
     case DexTypeEnum.Youves:
       return [await getYouvesTransferParams(tradeOperation, senderPublicKeyHash, tezos)];
+    case DexTypeEnum.Vortex:
+      return [await getVortexTransferParams(tradeOperation, senderPublicKeyHash, tezos)];
   }
 };
 

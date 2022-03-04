@@ -25,7 +25,7 @@ export { getDexName } from './utils/trade-operation.utils';
 export { parseTransferParamsToParamsWithKind } from './utils/transfer-params.utils';
 
 export { findArbitrage, findArbitrageV2 } from './main/arbitrage';
-export { extractPoolsFromState } from './main/extractors';
+export { extractRoutePairsFromState } from './main/extractors';
 export { arbitrageToOperationBatch } from './main/operations';
 export { initStorageBuilder } from './main/storage';
 export { watch } from './main/watch';

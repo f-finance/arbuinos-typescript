@@ -9,10 +9,10 @@ export interface RoutePair {
   dexId?: BigNumber;
   aTokenSlug: string;
   aTokenPool: BigNumber;
-  aTokenStandard?: TokenStandardEnum;
+  // aTokenStandard?: TokenStandardEnum;
   aTokenMultiplier?: BigNumber;
   bTokenSlug: string;
   bTokenPool: BigNumber;
-  bTokenStandard?: TokenStandardEnum;
+  // bTokenStandard?: TokenStandardEnum;
   bTokenMultiplier?: BigNumber;
 }

@@ -1,15 +1,15 @@
-import { ContractAbstraction, ContractProvider, ContractStorageType, TezosToolkit } from '@taquito/taquito';
+import { TezosToolkit } from '@taquito/taquito';
 
 const batchRequest = require('batch-request-js');
 
-const contractStorageRequest = (tezos) => (contract) =>
+const contractStorageRequest = (tezos: TezosToolkit) => (contract) =>
   tezos.contract
     .at(contract)
     .then((dexStorage) => dexStorage.storage())
     .then((storage) => [contract, storage]);
 
 export const initStorageBuilder = (contract_list) => {
-  return async (tezos: TezosToolkit) => {
+  return async (tezos) => {
     const { data, error } = await batchRequest(
       contract_list,
       contractStorageRequest(tezos),
@@ -21,6 +21,6 @@ export const initStorageBuilder = (contract_list) => {
     if (error.length > 0) {
       console.log('There are problems in initStorage');
     }
-    return new Map(data) as Map<string, ContractStorageType<ContractAbstraction<ContractProvider>>>;
+    return new Map(data);
   };
 };
