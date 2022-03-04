@@ -1,9 +1,9 @@
-import signalR from "@microsoft/signalr";
+import {HubConnectionBuilder} from "@microsoft/signalr";
 
 import logger from "./logger";
 
 // TODO handle connection issues
-const connection = new signalR.HubConnectionBuilder()
+const connection = new HubConnectionBuilder()
   .withUrl("https://api.tzkt.io/v1/events")
   .withAutomaticReconnect()
   .build();

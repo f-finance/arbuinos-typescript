@@ -9,7 +9,7 @@ import {
   findArbitrageV2,
   arbitrageToOperationBatch,
   watch,
-} from "../src/arbuinos";
+} from "./arbuinos";
 
 
 const tryExecuteArbitrages = async (state, arbitrages) => {
