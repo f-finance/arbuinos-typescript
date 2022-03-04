@@ -17,7 +17,7 @@ const getTransactionTimeoutDate = () => {
 export const getLiquidityBakingTransferParams = async (
   tradeOperation: TradeOperation,
   senderPublicKeyHash: string,
-  tezos: TezosToolkit
+  tezos: TezosToolkit,
 ) => {
   const contract = await getContract<LiquidityBakingContractAbstraction>(tradeOperation.dexAddress, tezos);
 
@@ -31,7 +31,7 @@ export const getLiquidityBakingTransferParams = async (
         senderPublicKeyHash,
         tradeOperation.aTokenAmount,
         tradeOperation.bTokenAmount,
-        getTransactionTimeoutDate()
+        getTransactionTimeoutDate(),
       )
       .toTransferParams({ mutez: true });
   }

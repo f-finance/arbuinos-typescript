@@ -7,7 +7,7 @@ export interface Fa12AssetContractAbstraction extends ContractAbstraction<Contra
     transfer: (
       senderPublicKeyHash: string,
       receiverPublicKeyHash: string,
-      tokenAmount: BigNumber
+      tokenAmount: BigNumber,
     ) => ContractMethod<ContractProvider>;
   };
 }

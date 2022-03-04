@@ -8,7 +8,7 @@ export interface PlentyContractAbstraction extends ContractAbstraction<ContractP
       receiverPublicKeyHash: string,
       outputTokenAddress: string,
       outputTokenId: string,
-      inputTokenAmount: BigNumber
+      inputTokenAmount: BigNumber,
     ) => ContractMethod<ContractProvider>;
   };
 }

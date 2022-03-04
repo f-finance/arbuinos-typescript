@@ -57,7 +57,7 @@ const isTradeInputBetter = (firstTrade: Trade, secondTrade: Trade) => {
 
 export const getBestTradeExactInput = (
   inputAssetAmount: BigNumber,
-  routePairsCombinations: Array<RoutePairWithDirection[]>
+  routePairsCombinations: Array<RoutePairWithDirection[]>,
 ) => {
   let bestTradeExactInput: Trade = [];
 
@@ -74,7 +74,7 @@ export const getBestTradeExactInput = (
 
 export const getBestTradeExactOutput = (
   outputAssetAmount: BigNumber,
-  routePairsCombinations: Array<RoutePairWithDirection[]>
+  routePairsCombinations: Array<RoutePairWithDirection[]>,
 ) => {
   let bestTradeExactOutput: Trade = [];
 

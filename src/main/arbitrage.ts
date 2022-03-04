@@ -2,12 +2,12 @@ import {
   estimateBestAmountIn,
   estimatePoolAmountOut,
   estimateProfit,
-} from "./estimates";
+} from './estimates';
 
-import BigNumber from "bignumber.js";
+import BigNumber from 'bignumber.js';
 
 export const findArbitrage = async (pools) => {
-  console.log("Start findArbitrage");
+  console.log('Start findArbitrage');
 
   console.log(`Pools number: ${pools.length}`);
 
@@ -35,7 +35,7 @@ export const findArbitrage = async (pools) => {
       checkedPath += 1;
       const bestAmountIn = estimateBestAmountIn(path);
       const profit = estimateProfit(path, bestAmountIn);
-      if (profit.gt(new BigNumber("0"))) {
+      if (profit.gt(new BigNumber('0'))) {
         const add = {
           path: [...path],
           bestAmountIn: bestAmountIn,
@@ -46,7 +46,7 @@ export const findArbitrage = async (pools) => {
     }
     if (depth < 4) {
       // max depth 3
-      const from = path.length > 0 ? path[path.length - 1].address2 : "tez";
+      const from = path.length > 0 ? path[path.length - 1].address2 : 'tez';
       address1ToPools[from]
         .filter((pool) => used.get(pool.address1) !== 1)
         .forEach((pool) => {
@@ -65,15 +65,15 @@ export const findArbitrage = async (pools) => {
   console.log(`Checked ${checkedPath} arbitrage paths`);
 
   return profitableArbitrageCycles.sort((a, b) =>
-    b.profit.minus(a.profit).toNumber()
+    b.profit.minus(a.profit).toNumber(),
   );
 };
 
 export const findArbitrageV2 = async (
   pools,
-  initialAmount = new BigNumber("10").pow(5)
+  initialAmount = new BigNumber('10').pow(5),
 ) => {
-  console.log("Start findArbitrageV2");
+  console.log('Start findArbitrageV2');
 
   console.log(`Pools number: ${pools.length}`);
 
@@ -108,7 +108,7 @@ export const findArbitrageV2 = async (
       // const profit = estimateProfit(path, bestAmountIn);
       const bestAmountIn = initialAmount;
       const profit = amountPath[amountPath.length - 1].minus(bestAmountIn);
-      if (profit.gt(new BigNumber("0"))) {
+      if (profit.gt(new BigNumber('0'))) {
         const add = {
           path: [...path],
           bestAmountIn: bestAmountIn,
@@ -125,7 +125,7 @@ export const findArbitrageV2 = async (
     // }
     if (depth < 4) {
       // max depth 3
-      const from = path.length > 0 ? path[path.length - 1].address2 : "tez";
+      const from = path.length > 0 ? path[path.length - 1].address2 : 'tez';
       address1ToPools[from]
         .filter((pool) => used.get(pool.address1) !== 1)
         .forEach((pool) => {
@@ -134,7 +134,7 @@ export const findArbitrageV2 = async (
           }
           const amountOut = estimatePoolAmountOut(
             amountPath[amountPath.length - 1],
-            pool
+            pool,
           );
           if (amountOut.gt(pool.liquidity2)) {
             return;
@@ -171,10 +171,10 @@ export const findArbitrageV2 = async (
   const end = new Date().getTime();
   const time = end - start;
   console.log(
-    `Checked ${checkedPath} arbitrage paths in ${time / 1000} seconds`
+    `Checked ${checkedPath} arbitrage paths in ${time / 1000} seconds`,
   );
 
   return profitableArbitrageCycles.sort((a, b) =>
-    b.profit.minus(a.profit).toNumber()
+    b.profit.minus(a.profit).toNumber(),
   );
 };

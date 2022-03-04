@@ -8,7 +8,7 @@ import { QuipuSwapContractAbstraction } from '../interfaces/quipu-swap.contract-
 export const getQuipuSwapTransferParams = async (
   tradeOperation: TradeOperation,
   senderPublicKeyHash: string,
-  tezos: TezosToolkit
+  tezos: TezosToolkit,
 ) => {
   const contract = await getContract<QuipuSwapContractAbstraction>(tradeOperation.dexAddress, tezos);
 

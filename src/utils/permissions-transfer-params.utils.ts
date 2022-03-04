@@ -9,7 +9,7 @@ import { loadAssetContract } from './asset.utils';
 export const getPermissionsTransferParams = async (
   tradeOperation: TradeOperation,
   senderPublicKeyHash: string,
-  tezos: TezosToolkit
+  tezos: TezosToolkit,
 ): Promise<PermissionsOpParams> => {
   if (tradeOperation.aTokenSlug === 'tez') {
     return { approve: [], revoke: [] };
@@ -26,9 +26,9 @@ export const getPermissionsTransferParams = async (
             .toTransferParams({ mutez: true }),
           assetContract.contract.methods
             .approve(tradeOperation.dexAddress, tradeOperation.aTokenAmount)
-            .toTransferParams({ mutez: true })
+            .toTransferParams({ mutez: true }),
         ],
-        revoke: []
+        revoke: [],
       };
     }
 
@@ -41,11 +41,11 @@ export const getPermissionsTransferParams = async (
                 add_operator: {
                   owner: senderPublicKeyHash,
                   operator: tradeOperation.dexAddress,
-                  token_id: assetContract.assetId
-                }
-              }
+                  token_id: assetContract.assetId,
+                },
+              },
             ])
-            .toTransferParams({ mutez: true })
+            .toTransferParams({ mutez: true }),
         ],
         revoke: [
           assetContract.contract.methods
@@ -54,12 +54,12 @@ export const getPermissionsTransferParams = async (
                 remove_operator: {
                   owner: senderPublicKeyHash,
                   operator: tradeOperation.dexAddress,
-                  token_id: assetContract.assetId
-                }
-              }
+                  token_id: assetContract.assetId,
+                },
+              },
             ])
-            .toTransferParams({ mutez: true })
-        ]
+            .toTransferParams({ mutez: true }),
+        ],
       };
     }
   }

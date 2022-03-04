@@ -8,7 +8,7 @@ import { calculateTradeExactInput } from '../utils/trade.utils';
 export const useTradeWithSlippageTolerance = (
   inputMutezAmountWithFee: BigNumber | undefined,
   trade: Trade,
-  slippageTolerance: number | undefined
+  slippageTolerance: number | undefined,
 ) => {
   return useMemo(() => {
     if (inputMutezAmountWithFee && slippageTolerance !== undefined) {

@@ -8,7 +8,7 @@ import { getRoutePairsWithDirection } from '../utils/route-pairs-with-direction.
 export const useRoutePairsCombinations = (
   inputAssetSlug: string | null | undefined,
   outputAssetSlug: string | null | undefined,
-  allRoutePairs: RoutePair[]
+  allRoutePairs: RoutePair[],
 ) =>
   useMemo(() => {
     const allowedRoutePairs = getAllowedRoutePairs(inputAssetSlug, outputAssetSlug, allRoutePairs);

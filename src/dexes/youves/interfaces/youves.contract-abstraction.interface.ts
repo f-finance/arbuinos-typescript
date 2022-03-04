@@ -7,13 +7,13 @@ export interface YouvesContractAbstraction extends ContractAbstraction<ContractP
       receiverPublicKeyHash: string,
       inputTokenAmount: BigNumber,
       outputTokenAmount: BigNumber,
-      transactionTimeoutDate: string
+      transactionTimeoutDate: string,
     ) => ContractMethod<ContractProvider>;
     cashToToken: (
       receiverPublicKeyHash: string,
       outputTokenAmount: BigNumber,
       inputTokenAmount: BigNumber,
-      transactionTimeoutDate: string
+      transactionTimeoutDate: string,
     ) => ContractMethod<ContractProvider>;
   };
 }

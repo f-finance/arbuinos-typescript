@@ -1,7 +1,7 @@
 module.exports = {
-  endOfLine: 'lf',
-  semi: true,
-  singleQuote: true,
-  tabWidth: 2,
-  trailingComma: 'es5',
-};
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "semi": false,
+  "singleQuote": true,
+  "endOfLine": "auto"
+}

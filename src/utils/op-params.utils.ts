@@ -11,7 +11,7 @@ import { getPermissionsTransferParams } from './permissions-transfer-params.util
 const getTradeOperaitonTransferParams = async (
   tradeOperation: TradeOperation,
   senderPublicKeyHash: string,
-  tezos: TezosToolkit
+  tezos: TezosToolkit,
 ) => {
   switch (tradeOperation.dexType) {
     case DexTypeEnum.QuipuSwap:
@@ -32,5 +32,5 @@ export const getTradeOpParams = (trade: Trade, senderPublicKeyHash: string, tezo
       const permissions = await getPermissionsTransferParams(tradeOperation, senderPublicKeyHash, tezos);
 
       return [...permissions.approve, ...tradeTransferParams, ...permissions.revoke];
-    })
+    }),
   ).then(result => result.flat());

@@ -25,23 +25,23 @@ const findSwapInput = (bTokenAmount: BigNumber, pair: RoutePairWithDirection) =>
 const getTradeOperationExactInput = (
   aTokenAmount: BigNumber,
   pair: RoutePairWithDirection,
-  slippageToleranceRatio: number
+  slippageToleranceRatio: number,
 ): TradeOperation => ({
   ...pair,
   aTokenAmount,
-  bTokenAmount: findSwapOutput(aTokenAmount.multipliedBy(slippageToleranceRatio), pair)
+  bTokenAmount: findSwapOutput(aTokenAmount.multipliedBy(slippageToleranceRatio), pair),
 });
 
 const getTradeOperationExactOutput = (bTokenAmount: BigNumber, pair: RoutePairWithDirection): TradeOperation => ({
   ...pair,
   bTokenAmount,
-  aTokenAmount: findSwapInput(bTokenAmount, pair)
+  aTokenAmount: findSwapInput(bTokenAmount, pair),
 });
 
 export const calculateTradeExactInput = (
   inputAssetAmount: BigNumber,
   routePairs: RoutePairWithDirection[],
-  slippageTolerancePercent = 0
+  slippageTolerancePercent = 0,
 ) => {
   const trade: Trade = [];
 
@@ -52,7 +52,7 @@ export const calculateTradeExactInput = (
     const firstTradeOperation = getTradeOperationExactInput(
       inputAssetAmount,
       routePairs[0],
-      tradeOperationSlippageToleranceRatio
+      tradeOperationSlippageToleranceRatio,
     );
     trade.push(firstTradeOperation);
 
@@ -63,7 +63,7 @@ export const calculateTradeExactInput = (
         const tradeOperation = getTradeOperationExactInput(
           previousTradeOutput,
           routePairs[i],
-          tradeOperationSlippageToleranceRatio
+          tradeOperationSlippageToleranceRatio,
         );
         trade.push(tradeOperation);
       }

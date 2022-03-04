@@ -5,12 +5,12 @@ export interface QuipuSwapContractAbstraction extends ContractAbstraction<Contra
   methods: {
     tezToTokenPayment: (
       outputTokenAmount: BigNumber,
-      receiverPublicKeyHash: string
+      receiverPublicKeyHash: string,
     ) => ContractMethod<ContractProvider>;
     tokenToTezPayment: (
       inputTokenAmount: BigNumber,
       outputTezosAmount: BigNumber,
-      receiverPublicKeyHash: string
+      receiverPublicKeyHash: string,
     ) => ContractMethod<ContractProvider>;
   };
 }

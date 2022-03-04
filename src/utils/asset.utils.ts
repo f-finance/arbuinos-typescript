@@ -15,7 +15,7 @@ export const loadAssetContract = async (assetSlug: string, tezos: TezosToolkit) 
   if (standard === TokenStandardEnum.FA1_2) {
     return {
       standard,
-      contract: contract as Fa12AssetContractAbstraction
+      contract: contract as Fa12AssetContractAbstraction,
     };
   }
 
@@ -23,7 +23,7 @@ export const loadAssetContract = async (assetSlug: string, tezos: TezosToolkit) 
     return {
       standard,
       assetId,
-      contract: contract as Fa2AssetContractAbstraction
+      contract: contract as Fa2AssetContractAbstraction,
     };
   }
 

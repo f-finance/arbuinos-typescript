@@ -6,13 +6,13 @@ export interface LiquidityBakingContractAbstraction extends ContractAbstraction<
     xtzToToken: (
       receiverPublicKeyHash: string,
       outputTokenAmount: BigNumber,
-      transactionTimeoutDate: string
+      transactionTimeoutDate: string,
     ) => ContractMethod<ContractProvider>;
     tokenToXtz: (
       receiverPublicKeyHash: string,
       inputTokenAmount: BigNumber,
       outputTezosAmount: BigNumber,
-      transactionTimeoutDate: string
+      transactionTimeoutDate: string,
     ) => ContractMethod<ContractProvider>;
   };
 }

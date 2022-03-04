@@ -7,7 +7,7 @@ const findRoutes = (
   maxDepth: number,
   // used in recursion.
   currentRoute: RoutePairWithDirection[] = [],
-  allRoutes: Array<RoutePairWithDirection[]> = []
+  allRoutes: Array<RoutePairWithDirection[]> = [],
 ) => {
   for (let i = 0; i < possiblePairs.length; i++) {
     const pair = possiblePairs[i];
@@ -28,7 +28,7 @@ const findRoutes = (
         pairsExcludingThisPair,
         maxDepth - 1,
         [...currentRoute, pair],
-        allRoutes
+        allRoutes,
       );
     }
   }
@@ -42,7 +42,7 @@ export const getRoutePairsCombinations = (
   inputAssetSlug: string | null | undefined,
   outputAssetSlug: string | null | undefined,
   routePairsWithDirection: RoutePairWithDirection[],
-  maxDepth = MAX_TRADE_DEPTH
+  maxDepth = MAX_TRADE_DEPTH,
 ) => {
   if (inputAssetSlug && outputAssetSlug) {
     const allCombinations: Array<RoutePairWithDirection[]> = [];

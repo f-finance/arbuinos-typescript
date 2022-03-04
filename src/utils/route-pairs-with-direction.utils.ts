@@ -5,7 +5,7 @@ import { RoutePair } from '../interface/route-pair.interface';
 export const getRoutePairsWithDirection = (routePairs: RoutePair[]) => {
   const directRoutePairs = routePairs.map<RoutePairWithDirection>(route => ({
     ...route,
-    direction: RouteDirectionEnum.Direct
+    direction: RouteDirectionEnum.Direct,
   }));
 
   const invertedRoutePairs = routePairs.map<RoutePairWithDirection>(route => ({
@@ -16,7 +16,7 @@ export const getRoutePairsWithDirection = (routePairs: RoutePair[]) => {
     bTokenPool: route.aTokenPool,
     aTokenMultiplier: route.bTokenMultiplier,
     bTokenMultiplier: route.aTokenMultiplier,
-    direction: RouteDirectionEnum.Inverted
+    direction: RouteDirectionEnum.Inverted,
   }));
 
   return [...directRoutePairs, ...invertedRoutePairs];

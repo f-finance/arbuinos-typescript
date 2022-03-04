@@ -1,7 +1,7 @@
-import { Contract, TezosToolkit, WalletContract } from "@taquito/taquito";
-import retry from "async-retry";
+import { Contract, TezosToolkit, WalletContract } from '@taquito/taquito';
+import retry from 'async-retry';
 
-import { TokenStandardEnum } from "../enum/token-standard.enum";
+import { TokenStandardEnum } from '../enum/token-standard.enum';
 
 const isEntrypointsMatched = (entrypoints: Record<string, any>, schema: string[][]) => {
   try {
@@ -23,14 +23,14 @@ const isEntrypointsMatched = (entrypoints: Record<string, any>, schema: string[]
 
     return false;
   }
-}
+};
 
 const RETRY_PARAMS = { retries: 3, minTimeout: 0, maxTimeout: 0 };
 
 const FA2_ENTRYPOINTS_SCHEMA = [
   ['balance_of', 'pair', 'list', 'contract'],
   ['transfer', 'list', 'pair'],
-  ['update_operators', 'list', 'or']
+  ['update_operators', 'list', 'or'],
 ];
 
 const FA1_2_ENTRYPOINTS_SCHEMA = [
@@ -38,13 +38,13 @@ const FA1_2_ENTRYPOINTS_SCHEMA = [
   ['transfer', 'pair', 'address', 'address', 'nat'],
   ['getAllowance', 'pair', 'pair', 'contract'],
   ['getBalance', 'pair', 'address', 'contract'],
-  ['getTotalSupply', 'pair', 'unit', 'contract']
+  ['getTotalSupply', 'pair', 'unit', 'contract'],
 ];
 
 export const detectTokenStandard = async (
   tezos: TezosToolkit,
-  contract: string | Contract | WalletContract
-): Promise<TokenStandardEnum | null>  => {
+  contract: string | Contract | WalletContract,
+): Promise<TokenStandardEnum | null> => {
   const { entrypoints } =
     typeof contract === 'string'
       ? await retry(() => tezos.rpc.getEntrypoints(contract), RETRY_PARAMS)
@@ -60,4 +60,4 @@ export const detectTokenStandard = async (
     default:
       return null;
   }
-}
+};

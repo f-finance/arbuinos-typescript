@@ -7,11 +7,11 @@ const util = (x: BigNumber, y: BigNumber): BigNumber[] => {
   const minus = x.minus(y);
 
   return [plus.exponentiatedBy(8).minus(minus.exponentiatedBy(8)), (minus.exponentiatedBy(7).plus(plus.exponentiatedBy(7))).multipliedBy(8)];
-}
+};
 
 type NewtonParam = { x: BigNumber; y: BigNumber; dx: BigNumber; dy: BigNumber; u: BigNumber; n: number }
 
-const  newton = (p: NewtonParam): BigNumber => {
+const newton = (p: NewtonParam): BigNumber => {
   if (p.n === 0)
     return p.dy;
   else {
@@ -24,7 +24,7 @@ const  newton = (p: NewtonParam): BigNumber => {
 
     return newton(p);
   }
-}
+};
 
 export const findFlatCfmmSwapOutput = (aTokenAmount: BigNumber, pair: RoutePairWithDirection) => {
   const feeRatio = getPairFeeRatio(pair);
@@ -37,7 +37,14 @@ export const findFlatCfmmSwapOutput = (aTokenAmount: BigNumber, pair: RoutePairW
 
   const [u] = util(x, y);
 
-  const p: NewtonParam = { x: x, y: y, dx: aTokenAmount.multipliedBy(aTokenMultiplier), dy: new BigNumber(0), u: u, n: 5 };
+  const p: NewtonParam = {
+    x: x,
+    y: y,
+    dx: aTokenAmount.multipliedBy(aTokenMultiplier),
+    dy: new BigNumber(0),
+    u: u,
+    n: 5,
+  };
 
   return newton(p).multipliedBy(feeRatio).dividedToIntegerBy(bTokenMultiplier);
 };

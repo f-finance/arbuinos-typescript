@@ -10,6 +10,6 @@ export const EMPTY_BLOCK: BlockInterface = {
   hash: '',
   header: {
     level: 0,
-    timestamp: ''
-  }
+    timestamp: '',
+  },
 };

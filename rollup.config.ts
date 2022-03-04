@@ -18,7 +18,7 @@ export default {
   watch: {
     include: 'src/**',
   },
-  requireReturnsDefault: "auto",
+  requireReturnsDefault: 'auto',
   plugins: [
     // Allow json resolution
     json(),

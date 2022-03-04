@@ -29,7 +29,7 @@ export const useAllRoutePairs = (webSocketUrl: string) => {
         aTokenPool: new BigNumber(rawPair.aTokenPool),
         aTokenMultiplier: rawPair.aTokenMultiplier ? new BigNumber(rawPair.aTokenMultiplier) : undefined,
         bTokenPool: new BigNumber(rawPair.bTokenPool),
-        bTokenMultiplier: rawPair.bTokenMultiplier ? new BigNumber(rawPair.bTokenMultiplier) : undefined
+        bTokenMultiplier: rawPair.bTokenMultiplier ? new BigNumber(rawPair.bTokenMultiplier) : undefined,
       }));
 
       const filteredPairs = allPairs.filter(pair => !pair.aTokenPool.isEqualTo(0) && !pair.bTokenPool.isEqualTo(0));

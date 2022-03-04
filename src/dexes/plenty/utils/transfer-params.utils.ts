@@ -7,7 +7,7 @@ import { PlentyContractAbstraction } from '../interfaces/plenty.contract-abstrac
 export const getPlentyTransferParams = async (
   tradeOperation: TradeOperation,
   senderPublicKeyHash: string,
-  tezos: TezosToolkit
+  tezos: TezosToolkit,
 ) => {
   const contract = await getContract<PlentyContractAbstraction>(tradeOperation.dexAddress, tezos);
 
@@ -19,7 +19,7 @@ export const getPlentyTransferParams = async (
       senderPublicKeyHash,
       outputTokenAddress,
       outputTokenId,
-      tradeOperation.aTokenAmount
+      tradeOperation.aTokenAmount,
     )
     .toTransferParams({ mutez: true });
 };

@@ -17,7 +17,7 @@ const getTransactionTimeoutDate = () => {
 export const getYouvesTransferParams = async (
   tradeOperation: TradeOperation,
   senderPublicKeyHash: string,
-  tezos: TezosToolkit
+  tezos: TezosToolkit,
 ) => {
   const contract = await getContract<YouvesContractAbstraction>(tradeOperation.dexAddress, tezos);
 
@@ -27,7 +27,7 @@ export const getYouvesTransferParams = async (
         senderPublicKeyHash,
         tradeOperation.aTokenAmount,
         tradeOperation.bTokenAmount,
-        getTransactionTimeoutDate()
+        getTransactionTimeoutDate(),
       )
       .toTransferParams({ mutez: true });
   } else {
@@ -36,7 +36,7 @@ export const getYouvesTransferParams = async (
         senderPublicKeyHash,
         tradeOperation.bTokenAmount,
         tradeOperation.aTokenAmount,
-        getTransactionTimeoutDate()
+        getTransactionTimeoutDate(),
       )
       .toTransferParams({ mutez: true });
   }

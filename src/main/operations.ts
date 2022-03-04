@@ -1,10 +1,10 @@
-import { estimateAmountOut } from "./estimates";
-import { DexTypeEnum } from "../enum/dex-type.enum";
-import { slugToAsset } from "./helpers";
+import { estimateAmountOut } from './estimates';
+import { DexTypeEnum } from '../enum/dex-type.enum';
+import { slugToAsset } from './helpers';
 import { TokenStandardEnum } from '../enum/token-standard.enum';
 
-import { OpKind } from "@taquito/taquito";
-import BigNumber from "bignumber.js";
+import { OpKind } from '@taquito/taquito';
+import BigNumber from 'bignumber.js';
 
 export const approveTokenCall = (token, tokenContract, from, to, amount) => {
   if (token.type === TokenStandardEnum.FA2) {
@@ -13,9 +13,9 @@ export const approveTokenCall = (token, tokenContract, from, to, amount) => {
         add_operator: {
           owner: from,
           operator: to,
-          token_id: token.tokenId
-        }
-      }
+          token_id: token.tokenId,
+        },
+      },
     ]);
   } else {
     return tokenContract.methods.approve(to, amount);
@@ -30,7 +30,7 @@ const poolContractAddressToExecutorContractAddress = {
   [DexTypeEnum.QuipuSwap]: (address) => address,
   [DexTypeEnum.Vortex]: (address) => address,
   [DexTypeEnum.Plenty]: (address) => address,
-  [DexTypeEnum.SpicySwap]: (_) => "KT1PwoZxyv4XkPEGnTqWYvjA1UYiPTgAGyqL" // SpicySwap v1 router
+  [DexTypeEnum.SpicySwap]: (_) => 'KT1PwoZxyv4XkPEGnTqWYvjA1UYiPTgAGyqL', // SpicySwap v1 router
 };
 
 /**
@@ -53,15 +53,15 @@ export const operationGeneratorFactory = (contract) => {
         ...contract.methods
           .tezToTokenPayment(minAmountOut, receiver)
           .toTransferParams({
-            amount: amountIn.toFixed()
-          })
+            amount: amountIn.toFixed(),
+          }),
       }),
       tokenToTez: (amountIn, minAmountOut, receiver) => ({
         kind: OpKind.TRANSACTION,
         ...contract.methods
           .tokenToTezPayment(amountIn, minAmountOut, receiver)
-          .toTransferParams()
-      })
+          .toTransferParams(),
+      }),
     },
     [DexTypeEnum.Vortex]: {
       tezToToken: (amountIn, minAmountOut, receiver) => {
@@ -72,11 +72,11 @@ export const operationGeneratorFactory = (contract) => {
             .xtzToToken({
               to: receiver,
               minTokensBought: minAmountOut,
-              deadline: deadline.toISOString()
+              deadline: deadline.toISOString(),
             })
             .toTransferParams({
-              amount: amountIn.toFixed()
-            })
+              amount: amountIn.toFixed(),
+            }),
         };
       },
       tokenToTez: (amountIn, minAmountOut, receiver) => {
@@ -88,11 +88,11 @@ export const operationGeneratorFactory = (contract) => {
               to: receiver,
               tokensSold: amountIn,
               minXtzBought: minAmountOut.toString(),
-              deadline: deadline.toISOString()
+              deadline: deadline.toISOString(),
             })
-            .toTransferParams()
+            .toTransferParams(),
         };
-      }
+      },
     },
     [DexTypeEnum.Plenty]: {
       tokenToToken: (
@@ -100,7 +100,7 @@ export const operationGeneratorFactory = (contract) => {
         minAmountOut,
         tokenInInfo,
         tokenOutInfo,
-        receiver
+        receiver,
       ) => ({
         kind: OpKind.TRANSACTION,
         ...contract.methodsObject
@@ -109,12 +109,12 @@ export const operationGeneratorFactory = (contract) => {
             recipient: receiver,
             requiredTokenAddress: tokenOutInfo.address,
             requiredTokenId: new BigNumber(
-              tokenOutInfo.type === TokenStandardEnum.FA2 ? `${tokenOutInfo.tokenId}` : "0"
+              tokenOutInfo.type === TokenStandardEnum.FA2 ? `${tokenOutInfo.tokenId}` : '0',
             ),
-            tokenAmountIn: amountIn
+            tokenAmountIn: amountIn,
           })
-          .toTransferParams()
-      })
+          .toTransferParams(),
+      }),
     },
     [DexTypeEnum.SpicySwap]: {
       tokenToToken: (
@@ -122,7 +122,7 @@ export const operationGeneratorFactory = (contract) => {
         minAmountOut,
         tokenInInfo,
         tokenOutInfo,
-        receiver
+        receiver,
       ) => {
         const deadline = new Date(new Date().getTime() + 5 * 60 * 1000); // in 5 minutes
 
@@ -130,13 +130,13 @@ export const operationGeneratorFactory = (contract) => {
           fa2_address: tokenInInfo.address,
           ...(tokenInInfo.type === TokenStandardEnum.FA2
             ? { token_id: new BigNumber(tokenInInfo.tokenId) }
-            : {})
+            : {}),
         };
         const tokenOut = {
           fa2_address: tokenOutInfo.address,
           ...(tokenOutInfo.type === TokenStandardEnum.FA2
             ? { token_id: new BigNumber(tokenOutInfo.tokenId) }
-            : {})
+            : {}),
         };
         return {
           kind: OpKind.TRANSACTION,
@@ -147,21 +147,21 @@ export const operationGeneratorFactory = (contract) => {
               amountOutMin: minAmountOut,
               deadline: deadline.toISOString(),
               tokenIn: tokenIn,
-              tokenOut: tokenOut
+              tokenOut: tokenOut,
             })
-            .toTransferParams()
+            .toTransferParams(),
         };
-      }
-    }
+      },
+    },
   };
 };
 
 export const arbitrageToOperationBatchWithAmountIn = async (
   amountIn,
   tezos,
-  arbitrage
+  arbitrage,
 ) => {
-  console.log("Start arbitrageToOperationBatchWithAmountIn");
+  console.log('Start arbitrageToOperationBatchWithAmountIn');
   // console.log("Arbitrage = ", JSON.stringify(arbitrage, null, " "));
 
   const { path, profit } = arbitrage;
@@ -177,20 +177,20 @@ export const arbitrageToOperationBatchWithAmountIn = async (
       pool.liquidity1,
       pool.liquidity2,
       pool.fee1,
-      pool.fee2
+      pool.fee2,
     );
 
     const minAmountOut =
-      i === path.length - 1 ? initialAmountIn : new BigNumber("1");
+      i === path.length - 1 ? initialAmountIn : new BigNumber('1');
     const poolContract = await tezos.wallet.at(
-      poolContractAddressToExecutorContractAddress[pool.dex](pool.contractAddress)
+      poolContractAddressToExecutorContractAddress[pool.dex](pool.contractAddress),
     );
     const transactionGenerator =
       operationGeneratorFactory(poolContract)[pool.dex];
 
-    if (pool.address1 === "tez") {
+    if (pool.address1 === 'tez') {
       batch = batch.with([
-        transactionGenerator.tezToToken(amountIn, minAmountOut, me)
+        transactionGenerator.tezToToken(amountIn, minAmountOut, me),
       ]);
     } else {
       const asset1 = slugToAsset(pool.address1);
@@ -204,14 +204,14 @@ export const arbitrageToOperationBatchWithAmountIn = async (
             asset1Contract,
             me,
             poolContract.address,
-            amountIn
-          ).toTransferParams()
-        }
+            amountIn,
+          ).toTransferParams(),
+        },
       ]);
 
-      if (pool.address2 === "tez") {
+      if (pool.address2 === 'tez') {
         batch = batch.with([
-          transactionGenerator.tokenToTez(amountIn, minAmountOut, me)
+          transactionGenerator.tokenToTez(amountIn, minAmountOut, me),
         ]);
       } else {
         const asset2 = slugToAsset(pool.address2);
@@ -222,8 +222,8 @@ export const arbitrageToOperationBatchWithAmountIn = async (
             minAmountOut,
             asset1,
             asset2,
-            me
-          )
+            me,
+          ),
         ]);
       }
     }
@@ -234,7 +234,7 @@ export const arbitrageToOperationBatchWithAmountIn = async (
   batch.operations = batch.operations.map((op) => ({
     ...op,
     amount: +op.amount,
-    mutez: true
+    mutez: true,
   }));
 
   // console.log("BATCH = ", JSON.stringify(batch.operations, null, " "));
@@ -242,12 +242,12 @@ export const arbitrageToOperationBatchWithAmountIn = async (
 };
 
 export const arbitrageToOperationBatch = async ({ tezos }, arbitrage) => {
-  console.log("Start executeArbitrage");
+  console.log('Start executeArbitrage');
 
   const { bestAmountIn } = arbitrage;
   const myBalance = await tezos.tz.getBalance(await tezos.wallet.pkh());
-  const amountIn = BigNumber.min(bestAmountIn, myBalance.multipliedBy(new BigNumber("0.9")).integerValue()).integerValue(
-    BigNumber.ROUND_DOWN
+  const amountIn = BigNumber.min(bestAmountIn, myBalance.multipliedBy(new BigNumber('0.9')).integerValue()).integerValue(
+    BigNumber.ROUND_DOWN,
   );
   return await arbitrageToOperationBatchWithAmountIn(amountIn, tezos, arbitrage);
 };

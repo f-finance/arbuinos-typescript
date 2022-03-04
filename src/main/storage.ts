@@ -1,4 +1,4 @@
-const batchRequest = require("batch-request-js");
+const batchRequest = require('batch-request-js');
 
 const contractStorageRequest = (tezos) => (contract) =>
   tezos.contract
@@ -14,10 +14,10 @@ export const initStorageBuilder = (contract_list) => {
       {
         batchSize: 20, // TODO move to config
         delay: 10, // TODO move to config
-      }
+      },
     );
     if (error.length > 0) {
-      console.log("There are problems in initStorage");
+      console.log('There are problems in initStorage');
     }
     return new Map(data);
   };

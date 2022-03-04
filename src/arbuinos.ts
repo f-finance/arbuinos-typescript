@@ -17,15 +17,15 @@ export {
   getTradeInputAmount,
   getTradeInputOperation,
   getTradeOutputAmount,
-  getTradeOutputOperation
+  getTradeOutputOperation,
 } from './utils/best-trade.utils';
 export { getPairFeeRatio } from './utils/fee.utils';
 export { getTradeOpParams } from './utils/op-params.utils';
 export { getDexName } from './utils/trade-operation.utils';
 export { parseTransferParamsToParamsWithKind } from './utils/transfer-params.utils';
 
-export { findArbitrage, findArbitrageV2 } from "./main/arbitrage";
-export { extractPoolsFromState } from "./main/extractors";
-export { arbitrageToOperationBatch } from "./main/operations";
-export { initStorageBuilder } from "./main/storage";
-export { watch } from "./main/watch";
+export { findArbitrage, findArbitrageV2 } from './main/arbitrage';
+export { extractPoolsFromState } from './main/extractors';
+export { arbitrageToOperationBatch } from './main/operations';
+export { initStorageBuilder } from './main/storage';
+export { watch } from './main/watch';

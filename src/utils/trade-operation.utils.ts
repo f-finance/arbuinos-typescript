@@ -9,6 +9,6 @@ export const getDexName = (dexType: DexTypeEnum) => {
     case DexTypeEnum.LiquidityBaking:
       return 'Liquidity Backing';
     case DexTypeEnum.Youves:
-      return 'Youves'
+      return 'Youves';
   }
 };
