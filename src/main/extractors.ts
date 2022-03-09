@@ -1,16 +1,14 @@
 import { DexTypeEnum } from '../enum/dex-type.enum';
-import { TokenStandardEnum } from '../enum/token-standard.enum';
-import { assetToSlug } from './helpers';
-
-import BigNumber from 'bignumber.js';
-import { getQuipuSwapPoolsFromStorage } from '../dexes/quipu-swap/utils/storate-to-route-pairs';
-import { RoutePair } from '../interface/route-pair.interface';
-import { getRoutePairsWithDirection } from '../utils/route-pairs-with-direction.utils';
 import { RoutePairWithDirection } from '../interface/route-pair-with-direction.interface';
 import { ArbuinosState } from '../interface/contract-storage.interface';
+import { RoutePair } from '../interface/route-pair.interface';
+import { getRoutePairsWithDirection } from '../utils/route-pairs-with-direction.utils';
+
+import { getQuipuSwapPoolsFromStorage } from '../dexes/quipu-swap/utils/storate-to-route-pairs';
 import { getPlentyPoolsFromStorage } from '../dexes/plenty/utils/storate-to-route-pairs';
 import { getLiquidityBakingPoolsFromStorage } from '../dexes/liquidity-baking/utils/storate-to-route-pairs';
 import { getVortexPoolsFromStorage } from '../dexes/vortex/utils/storate-to-route-pairs';
+import { getSpicySwapPoolsFromStorage } from '../dexes/spicy-swap/utils/storate-to-route-pairs';
 
 // const flameStateToPoolsInfo = async (state) => {
 //   return (
@@ -75,34 +73,13 @@ import { getVortexPoolsFromStorage } from '../dexes/vortex/utils/storate-to-rout
 //   ).flat();
 // };
 
-// const spicyswapStateToPoolsInfo = async (storage) => {
-//   return [
-//     {
-//       address1: assetToSlug({
-//         type: storage.token0.token_id ? TokenStandardEnum.FA2 : TokenStandardEnum.FA1_2,
-//         address: storage.token0.fa2_address,
-//         tokenId: storage.token0.token_id,
-//       }),
-//       address2: assetToSlug({
-//         type: storage.token1.token_id ? TokenStandardEnum.FA2 : TokenStandardEnum.FA1_2,
-//         address: storage.token1.fa2_address,
-//         tokenId: storage.token1.token_id,
-//       }),
-//       liquidity1: new BigNumber(storage.reserve0),
-//       liquidity2: new BigNumber(storage.reserve1),
-//       fee1: new BigNumber('0.997'),
-//       fee2: new BigNumber('1'),
-//     },
-//   ];
-// };
-
 export const contractStorageToPoolsExtractors = {
   [DexTypeEnum.QuipuSwap]: getQuipuSwapPoolsFromStorage,
   [DexTypeEnum.Plenty]: getPlentyPoolsFromStorage,
   [DexTypeEnum.Vortex]: getVortexPoolsFromStorage,
   // [DEX.FLAME]: flameStateToPoolsInfo,
   [DexTypeEnum.LiquidityBaking]: getLiquidityBakingPoolsFromStorage,
-  // [DexTypeEnum.SpicySwap]: spicyswapStateToPoolsInfo,
+  [DexTypeEnum.SpicySwap]: getSpicySwapPoolsFromStorage,
 };
 
 export const extractRoutePairsFromState = async (arbuinos: ArbuinosState): Promise<RoutePairWithDirection[]> => {
@@ -110,6 +87,7 @@ export const extractRoutePairsFromState = async (arbuinos: ArbuinosState): Promi
   const regularPools: RoutePair[] = [];
   for (const [address, storage] of contractStorage.entries()) {
     const dex = contractAddressToDex.get(address);
+    console.log(dex);
     const poolsExtractor = contractStorageToPoolsExtractors[dex];
     const new_pools = await poolsExtractor(address, storage);
 

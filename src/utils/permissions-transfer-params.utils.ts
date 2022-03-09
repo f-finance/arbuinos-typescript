@@ -5,6 +5,7 @@ import { PermissionsOpParams } from '../interface/permissions-op-params.interfac
 import { TradeOperation } from '../interface/trade.interface';
 import { TokenStandardEnum } from '../enum/token-standard.enum';
 import { loadAssetContract } from './asset.utils';
+import { DexTypeEnum } from '../enum/dex-type.enum';
 
 export const getPermissionsTransferParams = async (
   tradeOperation: TradeOperation,
@@ -16,16 +17,21 @@ export const getPermissionsTransferParams = async (
   }
 
   const assetContract = await loadAssetContract(tradeOperation.aTokenSlug, tezos);
+  let operatorAddress: string = tradeOperation.dexAddress;
+  if (tradeOperation.dexType === DexTypeEnum.SpicySwap) {
+    const spicySwapRouterAddress: string = 'KT1PwoZxyv4XkPEGnTqWYvjA1UYiPTgAGyqL';
+    operatorAddress = spicySwapRouterAddress;
+  }
 
   if (assetContract) {
     if (assetContract.standard === TokenStandardEnum.FA1_2) {
       return {
         approve: [
           assetContract.contract.methods
-            .approve(tradeOperation.dexAddress, new BigNumber(0))
+            .approve(operatorAddress, new BigNumber(0))
             .toTransferParams({ mutez: true }),
           assetContract.contract.methods
-            .approve(tradeOperation.dexAddress, tradeOperation.aTokenAmount)
+            .approve(operatorAddress, tradeOperation.aTokenAmount)
             .toTransferParams({ mutez: true }),
         ],
         revoke: [],
@@ -40,7 +46,7 @@ export const getPermissionsTransferParams = async (
               {
                 add_operator: {
                   owner: senderPublicKeyHash,
-                  operator: tradeOperation.dexAddress,
+                  operator: operatorAddress,
                   token_id: assetContract.assetId,
                 },
               },
@@ -53,7 +59,7 @@ export const getPermissionsTransferParams = async (
               {
                 remove_operator: {
                   owner: senderPublicKeyHash,
-                  operator: tradeOperation.dexAddress,
+                  operator: operatorAddress,
                   token_id: assetContract.assetId,
                 },
               },

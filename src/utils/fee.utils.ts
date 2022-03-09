@@ -11,7 +11,7 @@ const PAIR_FEE_PERCENT_RECORD: Record<DexTypeEnum, number> = {
   [DexTypeEnum.Youves]: 0.15,
   [DexTypeEnum.Vortex]: 0.28,
   [DexTypeEnum.Flame]: 0.15, // TODO
-  [DexTypeEnum.SpicySwap]: 0.15, // TODO
+  [DexTypeEnum.SpicySwap]: 0.3,
 };
 
 export const getPairFeeRatio = (pair: RoutePairWithDirection) => {

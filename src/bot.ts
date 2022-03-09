@@ -70,11 +70,8 @@ const tryExecuteArbitrages = async (state, arbitrages) => {
   await watch(arbuinos.contractStorage, ({ newContractStorage }) => {
     extractRoutePairsFromState({ ...arbuinos, contractStorage: newContractStorage })
       .then(async (pools) => {
-        console.log('Find pools');
-        return [
-          ...(await findArbitrageV2(pools)),
-          ...(await findArbitrageV2(pools, new BigNumber('10').pow(6))),
-        ];
+        console.log(JSON.stringify(pools, null, ' '));
+        return [];
       })
       .then((arbitrages) =>
         arbitrages.filter((item: any) => item.profit.gt(new BigNumber('50000'))),
