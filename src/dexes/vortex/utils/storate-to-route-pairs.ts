@@ -1,4 +1,4 @@
-import { assetToSlug } from '../../../main/helpers';
+import { assetToSlug } from '../../../utils/helpers';
 import { TokenStandardEnum } from '../../../enum/token-standard.enum';
 import { RoutePair } from '../../../interface/route-pair.interface';
 import { DexTypeEnum } from '../../../enum/dex-type.enum';

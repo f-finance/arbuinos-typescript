@@ -1,6 +1,6 @@
 import { estimateAmountOut } from './estimates';
 import { DexTypeEnum } from '../enum/dex-type.enum';
-import { slugToAsset } from './helpers';
+import { slugToAsset } from '../utils/helpers';
 import { TokenStandardEnum } from '../enum/token-standard.enum';
 
 import { OpKind } from '@taquito/taquito';

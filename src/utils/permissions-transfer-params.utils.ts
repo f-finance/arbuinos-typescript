@@ -19,6 +19,7 @@ export const getPermissionsTransferParams = async (
   const assetContract = await loadAssetContract(tradeOperation.aTokenSlug, tezos);
   let operatorAddress: string = tradeOperation.dexAddress;
   if (tradeOperation.dexType === DexTypeEnum.SpicySwap) {
+    // TODO: Refactor this
     const spicySwapRouterAddress: string = 'KT1PwoZxyv4XkPEGnTqWYvjA1UYiPTgAGyqL';
     operatorAddress = spicySwapRouterAddress;
   }

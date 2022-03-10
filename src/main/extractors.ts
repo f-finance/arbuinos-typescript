@@ -87,7 +87,6 @@ export const extractRoutePairsFromState = async (arbuinos: ArbuinosState): Promi
   const regularPools: RoutePair[] = [];
   for (const [address, storage] of contractStorage.entries()) {
     const dex = contractAddressToDex.get(address);
-    console.log(dex);
     const poolsExtractor = contractStorageToPoolsExtractors[dex];
     const new_pools = await poolsExtractor(address, storage);
 
