@@ -1,8 +1,8 @@
 import { BigNumber } from 'bignumber.js';
 
 export interface VortexContractStorageAbstraction {
-  xtzPool: BigNumber;
-  tokenId?: BigNumber;
+  xtzPool: BigNumber | string;
+  tokenId?: BigNumber | string;
   tokenAddress: string;
-  tokenPool: BigNumber;
+  tokenPool: BigNumber | string;
 }

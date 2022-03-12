@@ -1,9 +1,4 @@
-import {
-  ContractAbstraction,
-  ContractProvider,
-  TezosToolkit,
-  ContractStorageType,
-} from '@taquito/taquito';
+import { TezosToolkit } from '@taquito/taquito';
 import { DexTypeEnum } from '../enum/dex-type.enum';
 
 export interface ArbuinosState {

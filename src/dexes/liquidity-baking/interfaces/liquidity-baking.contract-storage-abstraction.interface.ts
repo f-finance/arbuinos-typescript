@@ -1,7 +1,7 @@
 import { BigNumber } from 'bignumber.js';
 
 export interface LiquidityBakingContractStorageAbstractionInterface {
-  xtzPool: BigNumber;
+  xtzPool: BigNumber | string;
   tokenAddress: string;
-  tokenPool: BigNumber;
+  tokenPool: BigNumber | string;
 }

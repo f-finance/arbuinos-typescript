@@ -1,4 +1,6 @@
 import BigNumber from 'bignumber.js';
+import { RoutePairWithDirection } from "../interface/route-pair-with-direction.interface";
+import { findAmmSwapOutput } from "../utils/amm-swap.utils";
 
 export const estimateAmountOut = (
   amount,
@@ -19,30 +21,21 @@ export const estimateAmountOut = (
     .div(a.plus(r1.multipliedBy(delta_a))).integerValue(BigNumber.ROUND_DOWN);
 };
 
-export const estimatePoolAmountOut = (
-  amount,
-  pool,
-) => {
-  const delta_a = new BigNumber(amount);
 
-  return pool.fee1.multipliedBy(pool.fee2).multipliedBy(pool.liquidity2).multipliedBy(delta_a)
-    .idiv(pool.liquidity1.plus(pool.fee1.multipliedBy(delta_a)));
-};
-
-export const estimateProfit = (path, initial = new BigNumber('1')) => {
+export const findRouteProfit = (initial = new BigNumber('1'), route: RoutePairWithDirection[]): BigNumber => {
   let amount = initial;
   let overflow = false;
-  for (let i = 0; i < path.length; i += 1) {
-    const pool = path[i];
-    if (amount.gt(pool.liquidity1)) {
+  for (let i = 0; i < route.length; i += 1) {
+    const pool = route[i];
+    if (amount.gt(pool.aTokenPool)) {
       overflow = true;
       break;
     }
-    amount = estimatePoolAmountOut(
+    amount = findAmmSwapOutput(
       amount,
       pool,
     );
-    if (amount.gt(pool.liquidity2)) {
+    if (amount.gt(pool.bTokenPool)) {
       overflow = true;
       break;
     }
@@ -53,19 +46,19 @@ export const estimateProfit = (path, initial = new BigNumber('1')) => {
   return amount.minus(initial);
 };
 
-export const estimateBestAmountIn = (path) => {
-  let l = new BigNumber('1'), r = path[0].liquidity1;
+export const findRouteBestInput = (path: RoutePairWithDirection[]): BigNumber => {
+  let l = new BigNumber('1'), r = path[0].aTokenPool;
   while (r.minus(l).gt(new BigNumber('1000'))) {
     const diff = r.minus(l).idiv(9);
     const mid1 = l.plus(diff.multipliedBy(4));
     const mid2 = mid1.plus(diff);
-    const profit1 = estimateProfit(path, mid1);
-    const profit2 = estimateProfit(path, mid2);
+    const profit1 = findRouteProfit(mid1, path);
+    const profit2 = findRouteProfit(mid2, path);
     if (profit1.gt(profit2) || profit2.lt(new BigNumber('0'))) {
       r = mid2;
     } else {
       l = mid1;
     }
   }
-  return r.plus(l).div(2);
+  return r.plus(l).idiv(2);
 };

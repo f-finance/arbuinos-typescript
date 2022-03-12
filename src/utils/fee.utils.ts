@@ -2,7 +2,7 @@ import { BigNumber } from 'bignumber.js';
 
 import { DexTypeEnum } from '../enum/dex-type.enum';
 import { RoutePairWithDirection } from '../interface/route-pair-with-direction.interface';
-import { Trade, TradeOperation } from '../interface/trade.interface';
+import { RoutePair } from '../interface/route-pair.interface';
 
 const PAIR_FEE_PERCENT_RECORD: Record<DexTypeEnum, number> = {
   [DexTypeEnum.QuipuSwap]: 0.3,
@@ -14,25 +14,8 @@ const PAIR_FEE_PERCENT_RECORD: Record<DexTypeEnum, number> = {
   [DexTypeEnum.SpicySwap]: 0.3,
 };
 
-export const getPairFeeRatio = (pair: RoutePairWithDirection) => {
+export const getPairFeeRatio = (pair: RoutePairWithDirection | RoutePair) => {
   const feePercent = PAIR_FEE_PERCENT_RECORD[pair.dexType];
 
   return new BigNumber(100).minus(feePercent).dividedBy(100);
-};
-
-// TODO: add estimated fee base on aToken token type
-const getTradeOperationFakeFee = (tradeOperation: TradeOperation) => {
-  return 1;
-};
-
-export const getTradeFakeFee = (trade: Trade) => {
-  let fakeFeeSum = new BigNumber(0);
-
-  for (const tradeOperation of trade) {
-    const tradeOperationFakeFee = getTradeOperationFakeFee(tradeOperation);
-
-    fakeFeeSum = fakeFeeSum.plus(tradeOperationFakeFee);
-  }
-
-  return fakeFeeSum;
 };
