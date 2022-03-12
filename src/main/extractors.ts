@@ -1,193 +1,35 @@
-import { DexTypeEnum } from '../enum/dex-type.enum';
-import { TokenStandardEnum } from '../enum/token-standard.enum';
-import { assetToSlug } from './helpers';
+import { ArbuinosState } from '../interface/arbuinos-state.interface'
+import { DexTypeEnum } from '../enum/dex-type.enum'
+import { RoutePair } from '../interface/route-pair.interface'
+import { RoutePairWithDirection } from '../interface/route-pair-with-direction.interface'
+import { getRoutePairsWithDirection } from '../utils/route-pairs-with-direction.utils'
 
-import BigNumber from 'bignumber.js';
-
-const quipuswapStateToPoolsInfo = async (storage) => {
-  return [
-    {
-      address1: assetToSlug({ type: TokenStandardEnum.XTZ }),
-      address2: assetToSlug({
-        type: storage.storage.token_id ? TokenStandardEnum.FA2 : TokenStandardEnum.FA1_2,
-        address: storage.storage.token_address,
-        tokenId: storage.storage.token_id,
-      }),
-      liquidity1: new BigNumber(storage.storage.tez_pool),
-      liquidity2: new BigNumber(storage.storage.token_pool),
-      fee1: new BigNumber('1'),
-      fee2: new BigNumber('0.997'),
-    },
-  ];
-};
-
-const plentyStateToPoolsInfo = async (storage) => {
-  return [
-    {
-      address1: assetToSlug({
-        type: storage.token1Check ? TokenStandardEnum.FA2 : TokenStandardEnum.FA1_2,
-        address: storage.token1Address,
-        tokenId: storage.token1Id,
-      }),
-      address2: assetToSlug({
-        type: storage.token2Check ? TokenStandardEnum.FA2 : TokenStandardEnum.FA1_2,
-        address: storage.token2Address,
-        tokenId: storage.token2Id,
-      }),
-      liquidity1: new BigNumber(storage.token1_pool),
-      liquidity2: new BigNumber(storage.token2_pool),
-      fee1: new BigNumber('0.9965'),
-      fee2: new BigNumber('1'),
-    },
-  ];
-};
-
-const vortexStateToPoolsInfo = async (storage) => {
-  return [
-    {
-      address1: assetToSlug({ type: TokenStandardEnum.XTZ }),
-      address2: assetToSlug({
-        type: storage.tokenId ? TokenStandardEnum.FA2 : TokenStandardEnum.FA1_2,
-        address: storage.tokenAddress,
-        tokenId: storage.tokenId,
-      }),
-      liquidity1: new BigNumber(storage.xtzPool),
-      liquidity2: new BigNumber(storage.tokenPool),
-      fee1: new BigNumber('0.9972'),
-      fee2: new BigNumber('1'),
-    },
-  ];
-};
-
-// const flameStateToPoolsInfo = async (state) => {
-//   return (
-//     await Promise.all(
-//       Array.from(state).flatMap(async ([contractAddress, storage]) => {
-//         const result = [];
-//         for (let i = 1; i <= storage.buckets_count.toNumber(); i += 1) {
-//           const bucket = await storage.buckets.get(i);
-//
-//           const tokenInfoToAddress = (tokenInfo) => {
-//             if ("tz" in tokenInfo) {
-//               return "tez";
-//             }
-//             if ("fa12" in tokenInfo) {
-//               return JSON.stringify({
-//                 address: `${tokenInfo.fa12}`,
-//                 id: "0",
-//               });
-//             }
-//             if ("fa2" in tokenInfo) {
-//               return JSON.stringify({
-//                 address: `${tokenInfo.fa2[5] ?? tokenInfo.fa2[7]}`,
-//                 id: `${tokenInfo.fa2[6] ?? tokenInfo.fa2[8]}`,
-//               });
-//             }
-//           };
-//           const address1 = tokenInfoToAddress(bucket.token_a);
-//           const address2 = tokenInfoToAddress(bucket.token_b);
-//           const liquidity1 = bucket.token_a_res;
-//           const liquidity2 = bucket.token_b_res;
-//           const fee1 = new BigNumber("0.997"); // TODO validate fee1 and fee2
-//           const fee2 = new BigNumber("1");
-//
-//           result.push(
-//             ...[
-//               {
-//                 dex: "FLAME",
-//                 contractAddress: contractAddress,
-//                 address1,
-//                 address2,
-//                 liquidity1,
-//                 liquidity2,
-//                 fee1,
-//                 fee2,
-//               },
-//               {
-//                 dex: "FLAME",
-//                 contractAddress: contractAddress,
-//                 address1: address2,
-//                 address2: address1,
-//                 liquidity1: liquidity2,
-//                 liquidity2: liquidity1,
-//                 fee1: fee1,
-//                 fee2: fee2,
-//               },
-//             ]
-//           );
-//         }
-//         return result;
-//       })
-//     )
-//   ).flat();
-// };
-
-const tzbtcoriginalStateToPoolsInfo = async (storage) => {
-  return [
-    {
-      address1: assetToSlug({ type: TokenStandardEnum.XTZ }),
-      address2: assetToSlug({
-        type: TokenStandardEnum.FA1_2,
-        address: storage.tokenAddress,
-      }),
-      liquidity1: new BigNumber(storage.xtzPool),
-      liquidity2: new BigNumber(storage.tokenPool),
-      fee1: new BigNumber('1'),
-      fee2: new BigNumber('0.998'),
-    },
-  ];
-};
-
-const spicyswapStateToPoolsInfo = async (storage) => {
-  return [
-    {
-      address1: assetToSlug({
-        type: storage.token0.token_id ? TokenStandardEnum.FA2 : TokenStandardEnum.FA1_2,
-        address: storage.token0.fa2_address,
-        tokenId: storage.token0.token_id,
-      }),
-      address2: assetToSlug({
-        type: storage.token1.token_id ? TokenStandardEnum.FA2 : TokenStandardEnum.FA1_2,
-        address: storage.token1.fa2_address,
-        tokenId: storage.token1.token_id,
-      }),
-      liquidity1: new BigNumber(storage.reserve0),
-      liquidity2: new BigNumber(storage.reserve1),
-      fee1: new BigNumber('0.997'),
-      fee2: new BigNumber('1'),
-    },
-  ];
-};
+import { getLiquidityBakingPoolsFromStorage } from '../dexes/liquidity-baking/utils/storate-to-route-pairs'
+import { getPlentyPoolsFromStorage } from '../dexes/plenty/utils/storate-to-route-pairs'
+import { getQuipuSwapPoolsFromStorage } from '../dexes/quipu-swap/utils/storate-to-route-pairs'
+import { getSpicySwapPoolsFromStorage } from '../dexes/spicy-swap/utils/storate-to-route-pairs'
+import { getVortexPoolsFromStorage } from '../dexes/vortex/utils/storate-to-route-pairs'
 
 export const contractStorageToPoolsExtractors = {
-  [DexTypeEnum.QuipuSwap]: quipuswapStateToPoolsInfo,
-  [DexTypeEnum.Plenty]: plentyStateToPoolsInfo,
-  [DexTypeEnum.Vortex]: vortexStateToPoolsInfo,
+  [DexTypeEnum.QuipuSwap]: getQuipuSwapPoolsFromStorage,
+  [DexTypeEnum.Plenty]: getPlentyPoolsFromStorage,
+  [DexTypeEnum.Vortex]: getVortexPoolsFromStorage,
   // [DEX.FLAME]: flameStateToPoolsInfo,
-  [DexTypeEnum.LiquidityBaking]: tzbtcoriginalStateToPoolsInfo,
-  [DexTypeEnum.SpicySwap]: spicyswapStateToPoolsInfo,
-};
+  [DexTypeEnum.LiquidityBaking]: getLiquidityBakingPoolsFromStorage,
+  [DexTypeEnum.SpicySwap]: getSpicySwapPoolsFromStorage,
+}
 
-export const extractPoolsFromState = async ({
-                                              contractStorage,
-                                              contractAddressToDex,
-                                            }) => {
-  const regularPools = [];
+export const getRoutePairsWithDirectionFromState = async (
+  arbuinos: ArbuinosState
+): Promise<RoutePairWithDirection[]> => {
+  const { contractStorage, contractAddressToDex } = arbuinos
+  const regularPools: RoutePair[] = []
   for (const [address, storage] of contractStorage.entries()) {
-    const dex = contractAddressToDex.get(address);
-    const poolsExtractor = contractStorageToPoolsExtractors[dex];
-    const new_pools = await poolsExtractor(storage);
+    const dex = contractAddressToDex.get(address)
+    const poolsExtractor = contractStorageToPoolsExtractors[dex]
+    const new_pools = await poolsExtractor(address, storage)
 
-    regularPools.push(
-      ...new_pools.map((pool) => ({ dex, contractAddress: address, ...pool })),
-    );
+    regularPools.push(...new_pools)
   }
-  const invertedPools = regularPools.map((pool) => ({
-    ...pool,
-    address1: pool.address2,
-    address2: pool.address1,
-    liquidity1: pool.liquidity2,
-    liquidity2: pool.liquidity1,
-  }));
-  return [...regularPools, ...invertedPools];
-};
+  return getRoutePairsWithDirection(regularPools)
+}
