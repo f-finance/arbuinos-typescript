@@ -18,7 +18,7 @@ export {
   getTradeOutputOperation,
 } from './utils/best-trade.utils';
 export { getPairFeeRatio } from './utils/fee.utils';
-export { getTradeOpParams } from './utils/op-params.utils';
+export { getTradeOpParams, getArbitrageOpParams } from './utils/op-params.utils';
 export { parseTransferParamsToParamsWithKind } from './utils/transfer-params.utils';
 
 export { initArbuinosState } from "./main/init";

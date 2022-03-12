@@ -31,7 +31,11 @@ export const watch = async (contractStorage, onStoreChange) => {
             transaction.target.alias
           } is updated:\nat block: ${
             'https://tzkt.io/' + transaction.block
-          }\nby operation: ${'https://tzkt.io/' + transaction.hash}`,
+          }\nby operation: ${
+            'https://tzkt.io/' + transaction.hash
+          }\nat timestamp: ${
+            transaction.timestamp
+          }`,
         );
       }
     });

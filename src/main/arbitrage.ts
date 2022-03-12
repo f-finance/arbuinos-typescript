@@ -1,10 +1,10 @@
-import { RoutePairWithDirection } from '../interface/route-pair-with-direction.interface';
-import { Arbitrage } from '../interface/arbitrage.interface';
+import { RoutePairWithDirection } from "../interface/route-pair-with-direction.interface";
+import { Arbitrage } from "../interface/arbitrage.interface";
 
 import { findRouteBestInput, findRouteProfit } from "./estimates";
 import { findAmmSwapOutput } from "../utils/amm-swap.utils";
 
-import BigNumber from 'bignumber.js';
+import BigNumber from "bignumber.js";
 
 //
 // export const findArbitrage = async pools => {
@@ -72,10 +72,11 @@ import BigNumber from 'bignumber.js';
 
 export const findArbitrageV2 = async (
   pools: RoutePairWithDirection[],
-  initialAmount = new BigNumber('10').pow(5),
-  max_depth = 3,
+  baseAssetSlug = "tez",
+  maxDepth = 3,
+  initialAmount = new BigNumber("10").pow(5)
 ): Promise<Arbitrage[]> => {
-  console.log('Start findArbitrageV2');
+  console.log("Start findArbitrageV2");
 
   console.log(`Pools number: ${pools.length}`);
 
@@ -103,21 +104,21 @@ export const findArbitrageV2 = async (
   const brute = depth => {
     if (
       path.length > 1 &&
-      path[path.length - 1].bTokenSlug === path[0].aTokenSlug
+      path[path.length - 1].bTokenSlug === baseAssetSlug
     ) {
       checkedPath += 1;
       const profit = amountPath[amountPath.length - 1].minus(initialAmount);
-      if (profit.gt(new BigNumber('0'))) {
+      if (profit.gt(new BigNumber("0"))) {
         const add = {
           route: [...path],
           bestAmountIn: initialAmount,
-          profit,
+          profit
         };
         profitableArbitrages.push(add);
       }
     }
     if (depth > 0) {
-      const from = path.length > 0 ? path[path.length - 1].bTokenSlug : 'tez';
+      const from = path.length > 0 ? path[path.length - 1].bTokenSlug : baseAssetSlug;
       (aTokenSlugToPools[from] as RoutePairWithDirection[])
         .filter(pool => used.get(pool.aTokenSlug) !== true)
         .forEach(pool => {
@@ -139,11 +140,11 @@ export const findArbitrageV2 = async (
     }
   };
 
-  brute(max_depth);
+  brute(maxDepth);
 
   profitableArbitrages.sort((a, b) => b.profit.minus(a.profit).toNumber());
-  if (profitableArbitrages.length > 100) {
-    profitableArbitrages = profitableArbitrages.slice(0, 100);
+  if (profitableArbitrages.length > 5) {
+    profitableArbitrages = profitableArbitrages.slice(0, 5);
   }
 
   profitableArbitrages = profitableArbitrages.map(arbitrage => {
@@ -152,7 +153,7 @@ export const findArbitrageV2 = async (
     return {
       ...arbitrage,
       bestAmountIn: bestAmountIn,
-      profit: profit,
+      profit: profit
     } as Arbitrage;
   });
 

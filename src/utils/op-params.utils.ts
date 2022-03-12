@@ -1,15 +1,17 @@
-import { TezosToolkit, TransferParams } from '@taquito/taquito';
+import { TezosToolkit, TransferParams } from "@taquito/taquito";
 
-import { DexTypeEnum } from '../enum/dex-type.enum';
-import { Trade, TradeOperation } from '../interface/trade.interface';
+import { DexTypeEnum } from "../enum/dex-type.enum";
+import { Trade, TradeOperation } from "../interface/trade.interface";
+import { Arbitrage } from "../interface/arbitrage.interface";
 
-import { getLiquidityBakingTransferParams } from '../dexes/liquidity-baking/utils/transfer-params.utils';
-import { getPermissionsTransferParams } from './permissions-transfer-params.utils';
-import { getPlentyTransferParams } from '../dexes/plenty/utils/transfer-params.utils';
-import { getQuipuSwapTransferParams } from '../dexes/quipu-swap/utils/transfer-params.utils';
-import { getSpicySwapTransferParams } from '../dexes/spicy-swap/utils/transfer-params.utils';
-import { getVortexTransferParams } from '../dexes/vortex/utils/transfer-params.utils';
-import { getYouvesTransferParams } from '../dexes/youves/utils/transfer-params.utils';
+import { getLiquidityBakingTransferParams } from "../dexes/liquidity-baking/utils/transfer-params.utils";
+import { getPermissionsTransferParams } from "./permissions-transfer-params.utils";
+import { getPlentyTransferParams } from "../dexes/plenty/utils/transfer-params.utils";
+import { getQuipuSwapTransferParams } from "../dexes/quipu-swap/utils/transfer-params.utils";
+import { getSpicySwapTransferParams } from "../dexes/spicy-swap/utils/transfer-params.utils";
+import { getVortexTransferParams } from "../dexes/vortex/utils/transfer-params.utils";
+import { getYouvesTransferParams } from "../dexes/youves/utils/transfer-params.utils";
+import { findAmmSwapOutput } from "./amm-swap.utils";
 
 const getTradeOperaitonTransferParams = async (
   tradeOperation: TradeOperation,
@@ -23,7 +25,7 @@ const getTradeOperaitonTransferParams = async (
           tradeOperation,
           senderPublicKeyHash,
           tezos
-        ),
+        )
       ];
     case DexTypeEnum.Plenty:
       return [
@@ -31,7 +33,7 @@ const getTradeOperaitonTransferParams = async (
           tradeOperation,
           senderPublicKeyHash,
           tezos
-        ),
+        )
       ];
     case DexTypeEnum.LiquidityBaking:
       return [
@@ -39,7 +41,7 @@ const getTradeOperaitonTransferParams = async (
           tradeOperation,
           senderPublicKeyHash,
           tezos
-        ),
+        )
       ];
     case DexTypeEnum.Youves:
       return [
@@ -47,7 +49,7 @@ const getTradeOperaitonTransferParams = async (
           tradeOperation,
           senderPublicKeyHash,
           tezos
-        ),
+        )
       ];
     case DexTypeEnum.Vortex:
       return [
@@ -55,7 +57,7 @@ const getTradeOperaitonTransferParams = async (
           tradeOperation,
           senderPublicKeyHash,
           tezos
-        ),
+        )
       ];
     case DexTypeEnum.SpicySwap:
       return [
@@ -63,7 +65,7 @@ const getTradeOperaitonTransferParams = async (
           tradeOperation,
           senderPublicKeyHash,
           tezos
-        ),
+        )
       ];
   }
 };
@@ -90,8 +92,28 @@ export const getTradeOpParams = (
         return [
           ...permissions.approve,
           ...tradeTransferParams,
-          ...permissions.revoke,
+          ...permissions.revoke
         ];
       }
     )
   ).then(result => result.flat());
+
+export const getArbitrageOpParams = (
+  arbitrage: Arbitrage,
+  senderPublicKeyHash: string,
+  tezos: TezosToolkit
+) => {
+  const trade: Trade = [];
+  let amount = arbitrage.bestAmountIn;
+  for (let i = 0; i < arbitrage.route.length; i += 1) {
+    const routePair = arbitrage.route[i];
+    const newAmount = findAmmSwapOutput(amount, routePair);
+    trade.push({
+      ...routePair,
+      aTokenAmount: amount,
+      bTokenAmount: newAmount
+    });
+    amount = newAmount;
+  }
+  return getTradeOpParams(trade, senderPublicKeyHash, tezos);
+};
