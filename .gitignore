@@ -13,3 +13,4 @@ build
 .docusaurus
 
 .env
+.DS_Store

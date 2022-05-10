@@ -12,6 +12,7 @@ import { getSpicySwapTransferParams } from "../dexes/spicy-swap/utils/transfer-p
 import { getVortexTransferParams } from "../dexes/vortex/utils/transfer-params.utils";
 import { getYouvesTransferParams } from "../dexes/youves/utils/transfer-params.utils";
 import { findAmmSwapOutput } from "./amm-swap.utils";
+import BigNumber from "bignumber.js";
 
 const getTradeOperaitonTransferParams = async (
   tradeOperation: TradeOperation,
@@ -98,13 +99,15 @@ export const getTradeOpParams = (
     )
   ).then(result => result.flat());
 
-export const getArbitrageOpParams = (
+export const getArbitrageOpParams = async (
   arbitrage: Arbitrage,
   senderPublicKeyHash: string,
   tezos: TezosToolkit
 ) => {
   const trade: Trade = [];
   let amount = arbitrage.bestAmountIn;
+  amount = BigNumber.min(amount, (await tezos.tz.getBalance(senderPublicKeyHash)).multipliedBy(0.9))
+    .integerValue(BigNumber.ROUND_DOWN);
   for (let i = 0; i < arbitrage.route.length; i += 1) {
     const routePair = arbitrage.route[i];
     const newAmount = findAmmSwapOutput(amount, routePair);

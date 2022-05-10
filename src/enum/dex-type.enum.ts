@@ -5,6 +5,7 @@ export enum DexTypeEnum {
   Youves = 'Youves',
   Vortex = 'Vortex',
   Flame = 'Flame',
-  SpicySwap = 'SpicySwap'
+  SpicySwap = 'SpicySwap',
+  Binance = "Binance"
 }
 
